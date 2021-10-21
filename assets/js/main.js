@@ -4,6 +4,7 @@
 // Global variables
 let game;
 let score = 0;
+let best_score = 0;
 let scoreText;
 let moveList = ["Jump", "Dive"];
 let moveText;
@@ -12,6 +13,8 @@ let coin_counter = 0;
 let fire_counter = 0;
 let graphics;
 let bounds;
+let player_dead = false;
+let reason = "none";
 // =========================================
 // =========================================
 // =========================================
@@ -36,25 +39,27 @@ window.onload = function () {
     type: Phaser.AUTO,
     width: 1200,
     height: 600,
-    scene: playGame,
+    scene: [
+      play_game_scene,
+      game_over_scene
+    ],
     backgroundColor: 0x444444,
-
     // physics settings
     physics: {
       default: "arcade",
-    },
-    
+    },    
   };
   game = new Phaser.Game(gameConfig);
+  game.scene.start("play_game_scene");
   window.focus();
 };
 // =========================================
 // =========================================
 // =========================================
-// playGame scene
-class playGame extends Phaser.Scene {
+// Scène de jeu
+class play_game_scene extends Phaser.Scene {
   constructor() {
-    super("PlayGame");
+    super("play_game_scene");
   }
 // =========================================
 // =========================================
@@ -93,6 +98,8 @@ class playGame extends Phaser.Scene {
     this.load.audio('jump_1', ["assets/sound/female_jump.wav"])
     this.load.audio('jump_2', ["assets/sound/female_jump2.wav"])
     this.load.audio('coin_sound', ["assets/sound/coin.wav"])
+    this.load.audio('death_1', ["assets/sound/female_death.wav"])
+    this.load.audio('death_2', ["assets/sound/sword_death.wav"])
   }
 // =========================================
 // =========================================
@@ -101,10 +108,12 @@ class playGame extends Phaser.Scene {
   create() {
 // =========================================
 // Adding the sounds and music
-  this.music_theme = this.sound.add("music_theme", {volume: 0.05, loop: true});
+  this.music_theme = this.sound.add("music_theme", {volume: 0.07, loop: true});
   this.jump_sound_1 = this.sound.add("jump_1", {volume: 0.4, loop: false});
   this.jump_sound_2 = this.sound.add("jump_2", {volume: 0.5, loop: false});
-  this.coin_sound = this.sound.add("coin_sound", {volume: 0.3, loop: false});
+  this.coin_sound = this.sound.add("coin_sound", {volume: 0.1, loop: false});
+  this.death_sound_1 = this.sound.add("death_1", {volume: 0.4, loop: false});
+  this.death_sound_2 = this.sound.add("death_2", {volume: 0.4, loop: false});
   this.music_theme.play();
 // =========================================
 // Background and parallax
@@ -252,6 +261,15 @@ class playGame extends Phaser.Scene {
       frameRate: 10,
       repeat: 0,
     });
+    this.anims.create({
+      key: "death_animation",
+      frames: this.anims.generateFrameNumbers("player", {
+        start: 26,
+        end: 35,
+      }),
+      frameRate: 10,
+      repeat: 0,
+    });
   }
 
 // =========================================
@@ -296,13 +314,15 @@ class playGame extends Phaser.Scene {
                 1500,
                 game.config.height / 3,
                 "fireball"
-              ).setScale(Phaser.Math.Between(
-                0.5, 0.9
-              ),);
+              );
               fire_counter = 0;
-              this.physics.add.collider(this.player, this.fireball, death, null, this);
-
-    }
+    this.physics.add.overlap(this.player, this.fireball, function(){
+      player_dead = true;
+      reason = "t'a cramé";
+    });
+              console.log("feu !")
+          
+  }
   }
 // =========================================
 // =========================================
@@ -337,6 +357,7 @@ class playGame extends Phaser.Scene {
     }
 
 }
+
 // =========================================
 // =========================================
 // =========================================
@@ -360,9 +381,8 @@ class playGame extends Phaser.Scene {
     }
     // game over by fall
     if (this.player.y > game.config.height) {
-      this.scene.start("PlayGame");
-      score = 0;
-      this.music_theme.stop();
+      player_dead = true;
+      reason = "t'es tombé";
     }
     this.player.x = gameOptions.playerStartPosition;
 
@@ -405,6 +425,21 @@ class playGame extends Phaser.Scene {
     this.fireball.anims.play("fire_anim", true);
     this.fireball.setVelocityX(-500);
 
+
+// Check if dead {
+  if (player_dead == true){
+    game.scene.stop("play_game_scene")
+    game.scene.start("game_over_scene")
+    this.death_sound_1.play();
+    this.death_sound_2.play();
+    best_score = score;
+    score = 0;
+    this.music_theme.stop();
+    console.log("Raison de la mort : " + reason);
+    player_dead = false;
+    
+  }
+
 // =========================================
 // DEBUG : Display hitbox
     // bounds = this.player.body;
@@ -413,7 +448,40 @@ class playGame extends Phaser.Scene {
     // graphics.strokeRectShape(bounds);
   }
 }
+// Scène de game over
+class game_over_scene extends Phaser.Scene {
+  constructor() {
+    super("game_over_scene");
+  }
 
+  create(){
+    console.log("test")
+    // adding the player;
+    this.player = this.physics.add.sprite(
+      100,
+      game.config.height / 2.5,
+      "player"
+    );
+    this.cameras.main.setBackgroundColor('rgba(0, 0, 0, 1)');
+    this.cameras.main.startFollow(this.player);
+    this.player.setScale(2);
+    this.player.body.setSize(10, 30).setOffset(30, 10)
+    this.anims.create({
+      key: "death_animation",
+      frames: this.anims.generateFrameNumbers("player", {
+        start: 26,
+        end: 35,
+      }),
+      frameRate: 2,
+      repeat: 0,
+    });
+    this.player.anims.play("death_animation", true);
+
+    
+  }
+  update(){
+  }
+}
 
 
 
@@ -436,12 +504,4 @@ function collectCoin (player, coin)
    this.coin_sound.play();
     score += 20;
     scoreText.setText('Score: ' + score);
-}
-// =========================================
-// death when hit by fire
-function death() {
-  this.scene.start("PlayGame");
-  score = 0;
-  this.music_theme.stop();
-  console.log("ded by fire")
 }
