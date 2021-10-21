@@ -3,6 +3,9 @@ clembod
 kvsr
 bakudas
 
+sounds :
+TaraMG - Princess voice
+ProjectsU012 - Coin sound
 
 made with :
 Phaser 3

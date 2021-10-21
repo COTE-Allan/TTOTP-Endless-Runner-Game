@@ -1,4 +1,7 @@
-
+// =========================================
+// =========================================
+// =========================================
+// Global variables
 let game;
 let score = 0;
 let scoreText;
@@ -9,9 +12,9 @@ let coin_counter = 0;
 let fire_counter = 0;
 let graphics;
 let bounds;
-
-
-
+// =========================================
+// =========================================
+// =========================================
 // global game options
 let gameOptions = {
   platformStartSpeed: 350,
@@ -24,10 +27,11 @@ let gameOptions = {
   jumps: 2,
   platformTypeList: ["platform_pillar", "platform_pillar_alt", "platform_smol", "platform_smol_alt"]
 };
-
-
+// =========================================
+// =========================================
+// =========================================
+// object containing configuration options
 window.onload = function () {
-  // object containing configuration options
   let gameConfig = {
     type: Phaser.AUTO,
     width: 1200,
@@ -44,12 +48,18 @@ window.onload = function () {
   game = new Phaser.Game(gameConfig);
   window.focus();
 };
-
+// =========================================
+// =========================================
+// =========================================
 // playGame scene
 class playGame extends Phaser.Scene {
   constructor() {
     super("PlayGame");
   }
+// =========================================
+// =========================================
+// =========================================
+// Preload the files used in the game.
   preload() {
     // LOAD du background
     this.load.image("background_1", "assets/sprites/bg/Background.png")
@@ -78,11 +88,26 @@ class playGame extends Phaser.Scene {
       frameWidth: 69,
       frameHeight: 44,
     });
+    // LOAD des sons.
+    this.load.audio('music_theme', ["assets/sound/theme_game_Pandora_Palace_master_of_disaster.mp3"])
+    this.load.audio('jump_1', ["assets/sound/female_jump.wav"])
+    this.load.audio('jump_2', ["assets/sound/female_jump2.wav"])
+    this.load.audio('coin_sound', ["assets/sound/coin.wav"])
   }
+// =========================================
+// =========================================
+// =========================================
+// Create the elements that only need to be created once.
   create() {
-
-
-    // Background and parallax
+// =========================================
+// Adding the sounds and music
+  this.music_theme = this.sound.add("music_theme", {volume: 0.05, loop: true});
+  this.jump_sound_1 = this.sound.add("jump_1", {volume: 0.4, loop: false});
+  this.jump_sound_2 = this.sound.add("jump_2", {volume: 0.5, loop: false});
+  this.coin_sound = this.sound.add("coin_sound", {volume: 0.3, loop: false});
+  this.music_theme.play();
+// =========================================
+// Background and parallax
     this.bg_1 = this.add.tileSprite(0, 0, game.config.width, game.config.height, "background_1")
     this.bg_1.setScale(2);
     this.bg_1.alpha = 0.2;
@@ -100,8 +125,8 @@ class playGame extends Phaser.Scene {
     this.bg_4 = this.add.tileSprite(0, 360, game.config.width, game.config.height, "background_4")
     this.bg_4.setOrigin(0, 0);
     this.bg_4.setScrollFactor(0);
-
-
+// =========================================
+// Add overlay UI
     scoreText = this.add.text(16, 16, "Score: 0", {
       fontSize: "32px",
       fill: "#FFFFFF",
@@ -110,32 +135,30 @@ class playGame extends Phaser.Scene {
       fontSize: "20px",
       fill: "#FFFFFF",
     });
-    // group with all active platforms.
+// =========================================
+// group with all active platforms.
     this.platformGroup = this.add.group({
-      // once a platform is removed, it's added to the pool
+// once a platform is removed, it's added to the pool
       removeCallback: function (platform) {
         platform.scene.platformPool.add(platform);
       },
     });
-
-    // pool
+// pool
     this.platformPool = this.add.group({
-      // once a platform is removed from the pool, it's added to the active platforms group
+// once a platform is removed from the pool, it's added to the active platforms group
       removeCallback: function (platform) {
         platform.scene.platformGroup.add(platform);
       },
     });
-
-    
-
-    // number of consecutive jumps made by the player
+// =========================================
+// number of consecutive jumps made by the player
     this.playerJumps = 0;
-
-    // adding a platform to the game, the arguments are platform width and x position
+// =========================================
+// adding a platform to the game, the arguments are platform width and x position
     this.addPlatform(game.config.width / 2, 500,
         "platform_start");
-
-    // adding the player;
+// =========================================
+// adding the player;
     this.player = this.physics.add.sprite(
       gameOptions.playerStartPosition,
       game.config.height / 2.5,
@@ -143,40 +166,29 @@ class playGame extends Phaser.Scene {
     );
     this.player.setGravityY(gameOptions.playerGravity).setScale(1.7);
     this.player.body.setSize(10, 30).setOffset(30, 10)
-
-    this.time.addEvent({
-      delay: 1000,
-      callback: this.delayDone,
-      callbackScope: this,
-      loop: false
-  });
-
-        // adding a coin as original
+// =========================================
+// adding a coin as original
         this.coin = this.physics.add.sprite(
           -100,
           game.config.height / 2.5 + 1,
           "coin"
         ).setScale(0.2);
-        // adding a fireball as original
+// adding a fireball as original
         this.fireball = this.physics.add.sprite(
           -100,
           game.config.height / 2.5 + 2,
           "fireball"
         ).setScale(1);
-
-    // setting collisions between the player and the platform group
+// =========================================
+// setting collisions between the player and the platform group
     this.physics.add.collider(this.player, this.platformGroup);
-    graphics = this.add.graphics();
-
-
-
-
-
-    // checking for input
+// Debug : hitbox display
+    // graphics = this.add.graphics();
+// =========================================
+// checking for input from the player
     this.input.on("pointerdown", this.jump, this);
-    
-
-    // Animations
+// =========================================
+// Animations
     this.anims.create({
       key: "fire_anim",
       frames: this.anims.generateFrameNumbers("fireball", {
@@ -204,7 +216,6 @@ class playGame extends Phaser.Scene {
       frameRate: 10,
       repeat: -1,
     });
-
     this.anims.create({
       key: "jump",
       frames: this.anims.generateFrameNumbers("player", {
@@ -214,7 +225,6 @@ class playGame extends Phaser.Scene {
       frameRate: 5,
       repeat: 0,
     });
-
     this.anims.create({
       key: "idle",
       frames: this.anims.generateFrameNumbers("player", {
@@ -244,9 +254,11 @@ class playGame extends Phaser.Scene {
     });
   }
 
-
-
-  // the core of the script: platform are added from the pool or created on the fly
+// =========================================
+// =========================================
+// =========================================
+// the core of the script: platform are added from the pool or created on the fly
+// fonction addPlatform + Coin + Fireball
   addPlatform(posX, Yperc, platformType) {
     let platform;
   
@@ -269,7 +281,7 @@ class playGame extends Phaser.Scene {
         // adding the coins
         this.coin = this.physics.add.sprite(
           Phaser.Math.Between(
-            1000, 1500
+            1300, 1700
           ),
           game.config.height / 3,
           "coin"
@@ -288,12 +300,15 @@ class playGame extends Phaser.Scene {
                 0.5, 0.9
               ),);
               fire_counter = 0;
-              this.physics.add.overlap(this.player, this.fireball, death, null, this);
+              this.physics.add.collider(this.player, this.fireball, death, null, this);
 
     }
   }
-
-  // the player jumps when on the ground, or once in the air as long as there are jumps left and the first jump was on the ground
+// =========================================
+// =========================================
+// =========================================
+// the player jumps when on the ground, or once in the air as long as there are jumps left and the first jump was on the ground
+// fonction jump
   jump() {
     if (this.playerJumps >= 2) {
       this.player.setVelocityY(300);
@@ -312,14 +327,20 @@ class playGame extends Phaser.Scene {
       this.player.setVelocityY(gameOptions.jumpForce * -1);
       if (this.playerJumps == 1) {
         this.player.anims.play("jump", true);
+        this.jump_sound_1.play();
       } else {
         this.player.anims.play("Djump", true);
+        this.jump_sound_2.play();
       }
     
     }
     }
 
 }
+// =========================================
+// =========================================
+// =========================================
+// fonction update
   update() {
     moveText.setText('Next move : ' + this.playerJumps);
 
@@ -341,6 +362,7 @@ class playGame extends Phaser.Scene {
     if (this.player.y > game.config.height) {
       this.scene.start("PlayGame");
       score = 0;
+      this.music_theme.stop();
     }
     this.player.x = gameOptions.playerStartPosition;
 
@@ -374,17 +396,18 @@ class playGame extends Phaser.Scene {
 
       );
     }
-    // coin mechanic
+// =========================================
+// coin mechanic
     this.coin.anims.play("coin_anim", true);
     this.coin.setVelocityX(gameOptions.platformStartSpeed * -1);
-    // Fireball mechanic
+// =========================================
+// Fireball mechanic
     this.fireball.anims.play("fire_anim", true);
     this.fireball.setVelocityX(-500);
 
-
-    // Display hitbox
+// =========================================
+// DEBUG : Display hitbox
     // bounds = this.player.body;
-
     // graphics.clear();
     // graphics.lineStyle(1, 0xffff00);
     // graphics.strokeRectShape(bounds);
@@ -392,21 +415,33 @@ class playGame extends Phaser.Scene {
 }
 
 
+
+
+// =========================================
+// =========================================
+// =========================================
+// JS fonctions used for differents things.
+// =========================================
+// Increment score per seconds
 function score_each_seconds() {
   frames = 0;
   score += 5;
   scoreText.setText("Score: " + score);
 }
-
+// =========================================
+// Add score when coin get then destroy coin
 function collectCoin (player, coin)
 {
     coin.disableBody(true, true);
-
+   this.coin_sound.play();
     score += 20;
     scoreText.setText('Score: ' + score);
 }
+// =========================================
+// death when hit by fire
 function death() {
   this.scene.start("PlayGame");
   score = 0;
+  this.music_theme.stop();
   console.log("ded by fire")
 }
