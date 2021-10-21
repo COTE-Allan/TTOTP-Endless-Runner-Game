@@ -6,7 +6,15 @@ bakudas
 sounds :
 TaraMG - Princess voice
 ProjectsU012 - Coin sound
+Toby Fox - Original versions of the musics
 
-made with :
+In game theme :
+Master Of Disaster - Pandora Palace Remix
+
+Game Over theme :
+Vetrom - Fainted Courage Remix
+
+Made with :
 Phaser 3
+A lot of coffee
 

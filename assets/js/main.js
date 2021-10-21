@@ -113,7 +113,7 @@ class play_game_scene extends Phaser.Scene {
   this.jump_sound_2 = this.sound.add("jump_2", {volume: 0.5, loop: false});
   this.coin_sound = this.sound.add("coin_sound", {volume: 0.1, loop: false});
   this.death_sound_1 = this.sound.add("death_1", {volume: 0.4, loop: false});
-  this.death_sound_2 = this.sound.add("death_2", {volume: 0.4, loop: false});
+  this.death_sound_2 = this.sound.add("death_2", {volume: 0.6, loop: false});
   this.music_theme.play();
 // =========================================
 // Background and parallax
