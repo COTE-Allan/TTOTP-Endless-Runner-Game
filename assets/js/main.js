@@ -6,14 +6,13 @@ let game;
 let score = 0;
 let best_score = 0;
 let scoreText;
-let moveList = ["Jump", "Dive"];
-let moveText;
 let frames = 0;
 let coin_counter = 0;
 let fire_counter = 0;
 let graphics;
 let bounds;
 let player_dead = false;
+let dead_loop_once = true;
 let reason = "none";
 // =========================================
 // =========================================
@@ -27,6 +26,7 @@ let gameOptions = {
   playerGravity: 900,
   jumpForce: 500,
   playerStartPosition: 200,
+  
   jumps: 2,
   platformTypeList: ["platform_pillar", "platform_pillar_alt", "platform_smol", "platform_smol_alt"]
 };
@@ -40,8 +40,7 @@ window.onload = function () {
     width: 1200,
     height: 600,
     scene: [
-      play_game_scene,
-      game_over_scene
+      play_game_scene
     ],
     backgroundColor: 0x444444,
     // physics settings
@@ -52,6 +51,7 @@ window.onload = function () {
   game = new Phaser.Game(gameConfig);
   game.scene.start("play_game_scene");
   window.focus();
+  
 };
 // =========================================
 // =========================================
@@ -93,19 +93,41 @@ class play_game_scene extends Phaser.Scene {
       frameWidth: 69,
       frameHeight: 44,
     });
+    // LOAD de la mort du personnage.
+    this.load.spritesheet("death", "assets/sprites/death.png", {
+      frameWidth: 100,
+      frameHeight: 100,
+    });
     // LOAD des sons.
     this.load.audio('music_theme', ["assets/sound/theme_game_Pandora_Palace_master_of_disaster.mp3"])
     this.load.audio('jump_1', ["assets/sound/female_jump.wav"])
     this.load.audio('jump_2', ["assets/sound/female_jump2.wav"])
     this.load.audio('coin_sound', ["assets/sound/coin.wav"])
     this.load.audio('death_1', ["assets/sound/female_death.wav"])
-    this.load.audio('death_2', ["assets/sound/sword_death.wav"])
+    // LOAD des boutons.
+    this.load.image("play_button", "assets/sprites/PlayButton.png")
+    this.load.image("go_menu_button", "assets/sprites/Home_Doorway.png")
+
   }
 // =========================================
 // =========================================
 // =========================================
 // Create the elements that only need to be created once.
   create() {
+    // UI and button
+
+    // Start button
+    this.pause_button= this.add.image(1100, 55, 'go_menu_button')
+    this.pause_button.setInteractive().setScale(1.3);
+    this.pause_button.on('pointerdown', () => { 
+      // this.scene.pause(); 
+      // this.scene.start("go_menu_button")
+    });
+// =========================================
+    // Fade and death system init
+    this.cameras.main.fadeIn(500);
+    player_dead = false;
+    dead_loop_once = true;
 // =========================================
 // Adding the sounds and music
   this.music_theme = this.sound.add("music_theme", {volume: 0.07, loop: true});
@@ -113,7 +135,6 @@ class play_game_scene extends Phaser.Scene {
   this.jump_sound_2 = this.sound.add("jump_2", {volume: 0.5, loop: false});
   this.coin_sound = this.sound.add("coin_sound", {volume: 0.1, loop: false});
   this.death_sound_1 = this.sound.add("death_1", {volume: 0.4, loop: false});
-  this.death_sound_2 = this.sound.add("death_2", {volume: 0.6, loop: false});
   this.music_theme.play();
 // =========================================
 // Background and parallax
@@ -138,10 +159,6 @@ class play_game_scene extends Phaser.Scene {
 // Add overlay UI
     scoreText = this.add.text(16, 16, "Score: 0", {
       fontSize: "32px",
-      fill: "#FFFFFF",
-    });
-    moveText = this.add.text(16, 50, "Next move : Jump", {
-      fontSize: "20px",
       fill: "#FFFFFF",
     });
 // =========================================
@@ -262,14 +279,15 @@ class play_game_scene extends Phaser.Scene {
       repeat: 0,
     });
     this.anims.create({
-      key: "death_animation",
-      frames: this.anims.generateFrameNumbers("player", {
-        start: 26,
-        end: 35,
+      key: "death",
+      frames: this.anims.generateFrameNumbers("death", {
+        start: 0,
+        end: 89,
       }),
-      frameRate: 10,
+      frameRate: 60,
       repeat: 0,
     });
+    
   }
 
 // =========================================
@@ -363,7 +381,6 @@ class play_game_scene extends Phaser.Scene {
 // =========================================
 // fonction update
   update() {
-    moveText.setText('Next move : ' + this.playerJumps);
 
     // Animation parallax
     this.bg_1.tilePositionX += 1;
@@ -428,15 +445,44 @@ class play_game_scene extends Phaser.Scene {
 
 // Check if dead {
   if (player_dead == true){
-    game.scene.stop("play_game_scene")
-    game.scene.start("game_over_scene")
-    this.death_sound_1.play();
-    this.death_sound_2.play();
-    best_score = score;
-    score = 0;
-    this.music_theme.stop();
-    console.log("Raison de la mort : " + reason);
-    player_dead = false;
+    if (dead_loop_once == true){
+      // Kill character
+      dead_loop_once = false;
+      this.death_sound_1.play();
+      this.player.setActive(false).setVisible(false);
+      // Animated the death
+      this.death_explosion = this.physics.add.sprite(
+        gameOptions.playerStartPosition,
+        this.player.y,
+        "death"
+      );
+      this.death_explosion.setScale(3);
+      this.death_explosion.setVelocityX(gameOptions.platformStartSpeed * -1);
+
+      this.death_explosion.anims.play("death", true);
+
+      this.time.addEvent({
+        delay: 500,
+        callback: ()=>{
+          this.cameras.main.fadeOut(100);
+          this.time.addEvent({
+            delay: 1000,
+            callback: ()=>{
+              game.scene.start("play_game_scene")
+              best_score = score;
+              score = 0;
+              this.music_theme.stop();
+              console.log("Raison de la mort : " + reason);
+            },
+            loop: false
+          })
+        },
+        loop: false
+      })
+
+    }
+    
+
     
   }
 
@@ -446,40 +492,6 @@ class play_game_scene extends Phaser.Scene {
     // graphics.clear();
     // graphics.lineStyle(1, 0xffff00);
     // graphics.strokeRectShape(bounds);
-  }
-}
-// Scène de game over
-class game_over_scene extends Phaser.Scene {
-  constructor() {
-    super("game_over_scene");
-  }
-
-  create(){
-    console.log("test")
-    // adding the player;
-    this.player = this.physics.add.sprite(
-      100,
-      game.config.height / 2.5,
-      "player"
-    );
-    this.cameras.main.setBackgroundColor('rgba(0, 0, 0, 1)');
-    this.cameras.main.startFollow(this.player);
-    this.player.setScale(2);
-    this.player.body.setSize(10, 30).setOffset(30, 10)
-    this.anims.create({
-      key: "death_animation",
-      frames: this.anims.generateFrameNumbers("player", {
-        start: 26,
-        end: 35,
-      }),
-      frameRate: 2,
-      repeat: 0,
-    });
-    this.player.anims.play("death_animation", true);
-
-    
-  }
-  update(){
   }
 }
 
