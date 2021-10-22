@@ -41,6 +41,15 @@ window.onload = function () {
     type: Phaser.AUTO,
     width: 900,
     height: 500,
+        min: {
+          width: 700,
+          height: 300
+      },
+      max: {
+          width: 900,
+          height: 500
+        },
+        scale: { parent: 'game_screen', autoCenter: Phaser.Scale.CENTER_BOTH },
     scene: [
       menu_scene,
       play_game_scene,
@@ -49,6 +58,7 @@ window.onload = function () {
     // physics settings
     physics: {
       default: "arcade",
+      fixedStep: false 
     },    
   };
   game = new Phaser.Game(gameConfig);
@@ -115,6 +125,7 @@ class menu_scene extends Phaser.Scene {
     this.load.image("signature", "assets/img/KC_sign.png")
 
   }
+  
   create() {
           // Adding sounds
           this.click_sound = this.sound.add("click_button", {volume: 0.4, loop: false});
@@ -195,8 +206,8 @@ class play_game_scene extends Phaser.Scene {
     this.pause_button.setInteractive().setScale(1.3);
       this.pause_button.on('pointerdown', () => {  
         this.cameras.main.fadeOut(300);
-       this.click_sound.play();
-        this.music_theme.stop();  
+        this.click_sound.play();
+        this.music_theme.pause();  
         this.time.addEvent({
           delay: 500,
           callback: ()=>{
@@ -426,10 +437,6 @@ class play_game_scene extends Phaser.Scene {
       this.player.body.touching.down ||
       (this.playerJumps > 0, this.playerJumps < gameOptions.jumps)
     ) {
-      if (this.player.body.touching.down) {
-        this.playerJumps = 0;
-        console.log("jump_reset")
-      }
       if (this.playerJumps <= 2){
         this.playerJumps++;
 
@@ -463,8 +470,13 @@ class play_game_scene extends Phaser.Scene {
     if (frames == 100) {
       score_each_seconds();
     }
-    if (this.player.body.touching.down) {
+        if (this.player.body.onFloor()) {
       this.player.anims.play("right", true);
+
+      if (this.playerJumps > 0) {
+        this.playerJumps = 0;
+        console.log("jump_reset")
+      }
     }
     // game over by fall
     if (this.player.y > game.config.height) {
