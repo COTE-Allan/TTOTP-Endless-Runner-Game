@@ -6,6 +6,8 @@ let game;
 let score = 0;
 let best_score = 0;
 let scoreText;
+let BscoreText;
+let death_count = 1;
 let frames = 0;
 let coin_counter = 0;
 let fire_counter = 0;
@@ -20,12 +22,12 @@ let reason = "none";
 // global game options
 let gameOptions = {
   platformStartSpeed: 350,
-  spawnRange: [50, 51],
+  spawnRange: [30, 50],
   spawnHeight: [580, 720],
   platformType: [0, 3],
   playerGravity: 900,
-  jumpForce: 500,
-  playerStartPosition: 200,
+  jumpForce: 400,
+  playerStartPosition: 150,
   
   jumps: 2,
   platformTypeList: ["platform_pillar", "platform_pillar_alt", "platform_smol", "platform_smol_alt"]
@@ -37,7 +39,7 @@ let gameOptions = {
 window.onload = function () {
   let gameConfig = {
     type: Phaser.AUTO,
-    width: 1200,
+    width: 900,
     height: 600,
     scene: [
       play_game_scene
@@ -117,14 +119,14 @@ class play_game_scene extends Phaser.Scene {
     // UI and button
 
     // Start button
-    this.pause_button= this.add.image(1100, 55, 'go_menu_button')
+    this.pause_button= this.add.image(800, 55, 'go_menu_button')
     this.pause_button.setInteractive().setScale(1.3);
     this.pause_button.on('pointerdown', () => { 
       // this.scene.pause(); 
       // this.scene.start("go_menu_button")
     });
 // =========================================
-    // Fade and death system init
+    // Fade and deatfh system init
     this.cameras.main.fadeIn(500);
     player_dead = false;
     dead_loop_once = true;
@@ -469,7 +471,18 @@ class play_game_scene extends Phaser.Scene {
             delay: 1000,
             callback: ()=>{
               game.scene.start("play_game_scene")
-              best_score = score;
+              if (score > best_score){
+                best_score = score;
+              }
+              BscoreText = this.add.text(16, 50, "Meilleur score: " + best_score, {
+                fontSize: "20px",
+                fill: "#FFFFFF",
+              });
+              BscoreText = this.add.text(16, 70, "Morts: " + death_count++, {
+                fontSize: "20px",
+                fill: "#FFFFFF",
+              });
+              console.log(best_score)
               score = 0;
               this.music_theme.stop();
               console.log("Raison de la mort : " + reason);
