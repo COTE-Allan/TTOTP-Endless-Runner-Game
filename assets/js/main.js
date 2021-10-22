@@ -11,11 +11,12 @@ let death_count = 1;
 let frames = 0;
 let coin_counter = 0;
 let fire_counter = 0;
-let graphics;
-let bounds;
+// let graphics;
+// let bounds;
 let player_dead = false;
 let dead_loop_once = true;
-let reason = "none";
+// let reason = "none";
+let music_on = false;
 // =========================================
 // =========================================
 // =========================================
@@ -39,16 +40,8 @@ let gameOptions = {
 window.onload = function () {
   let gameConfig = {
     type: Phaser.AUTO,
-    width: 900,
-    height: 500,
-        min: {
-          width: 700,
-          height: 300
-      },
-      max: {
-          width: 900,
-          height: 500
-        },
+    width: 850,
+    height: 450,
         scale: { parent: 'game_screen', autoCenter: Phaser.Scale.CENTER_BOTH },
     scene: [
       menu_scene,
@@ -135,7 +128,7 @@ class menu_scene extends Phaser.Scene {
         this.signature = this.add.image(this.cameras.main.worldView.x + this.cameras.main.width / 1.15, this.cameras.main.worldView.y + this.cameras.main.height / 1.1, 'signature')
         this.signature.setScale(0.2);
         this.play_button = this.add.image(this.cameras.main.worldView.x + this.cameras.main.width / 2, this.cameras.main.worldView.y + this.cameras.main.height / 1.3, 'play_button')
-        this.play_button.setInteractive().setScale(2);
+        this.play_button.setInteractive().setScale(1.5);
         this.play_button.on('pointerdown', () => {  
           this.cameras.main.fadeOut(300);             
           this.click_sound.play();
@@ -179,7 +172,7 @@ class play_game_scene extends Phaser.Scene {
         callback: ()=>{
           if (gameOptions.platformStartSpeed < 700){
           gameOptions.platformStartSpeed = gameOptions.platformStartSpeed + 2;
-          console.log(gameOptions.platformStartSpeed);
+          // console.log(gameOptions.platformStartSpeed);
         }},
         loop: true
       })
@@ -197,20 +190,25 @@ class play_game_scene extends Phaser.Scene {
   this.coin_sound = this.sound.add("coin_sound", {volume: 0.1, loop: false});
   this.death_sound_1 = this.sound.add("death_1", {volume: 0.4, loop: false});
   this.click_sound = this.sound.add("click_button", {volume: 0.4, loop: false});
-  this.music_theme.play();
+  if (music_on == false){
+    this.music_theme.play();
+    // console.log("music")
+    music_on = true;
+  }
   // =========================================
 
       // UI :
     // leave button
-    this.pause_button= this.add.image(800, 55, 'go_menu_button')
-    this.pause_button.setInteractive().setScale(1.3);
+    this.pause_button= this.add.image(800, 50, 'go_menu_button')
+    this.pause_button.setInteractive().setScale(1);
       this.pause_button.on('pointerdown', () => {  
         this.cameras.main.fadeOut(300);
         this.click_sound.play();
-        this.music_theme.pause();  
+        music_on = false;
         this.time.addEvent({
           delay: 500,
           callback: ()=>{
+            this.game.sound.stopAll();
             this.scene.switch("menu_scene")
             this.scene.start("menu_scene")
                   },
@@ -271,7 +269,7 @@ class play_game_scene extends Phaser.Scene {
       game.config.height / 2.5,
       "player"
     );
-    this.player.setGravityY(gameOptions.playerGravity).setScale(1.7);
+    this.player.setGravityY(gameOptions.playerGravity).setScale(1.5);
     this.player.body.setSize(10, 30).setOffset(30, 10)
 // =========================================
 // adding a coin as original
@@ -417,9 +415,9 @@ class play_game_scene extends Phaser.Scene {
               fire_counter = 0;
     this.physics.add.overlap(this.player, this.fireball, function(){
       player_dead = true;
-      reason = "t'a cramé";
+      // reason = "t'a cramé";
     });
-              console.log("feu !")
+              // console.log("feu !")
           
   }
   }
@@ -475,13 +473,13 @@ class play_game_scene extends Phaser.Scene {
 
       if (this.playerJumps > 0) {
         this.playerJumps = 0;
-        console.log("jump_reset")
+        // console.log("jump_reset")
       }
     }
     // game over by fall
     if (this.player.y > game.config.height) {
       player_dead = true;
-      reason = "t'es tombé";
+      // reason = "t'es tombé";
     }
     this.player.x = gameOptions.playerStartPosition;
 
@@ -562,10 +560,9 @@ class play_game_scene extends Phaser.Scene {
                 fontSize: "20px",
                 fill: "#FFFFFF",
               });
-              console.log(best_score)
+              // console.log(best_score)
               score = 0;
-              this.music_theme.stop();
-              console.log("Raison de la mort : " + reason);
+              // console.log("Raison de la mort : " + reason);
             },
             loop: false
           })
