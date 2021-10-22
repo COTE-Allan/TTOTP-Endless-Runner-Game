@@ -40,33 +40,34 @@ window.onload = function () {
   let gameConfig = {
     type: Phaser.AUTO,
     width: 900,
-    height: 600,
+    height: 500,
     scene: [
-      play_game_scene
+      menu_scene,
+      play_game_scene,
     ],
-    backgroundColor: 0x444444,
+    backgroundColor: 0x292929,
     // physics settings
     physics: {
       default: "arcade",
     },    
   };
   game = new Phaser.Game(gameConfig);
-  game.scene.start("play_game_scene");
+  game.scene.start("menu_scene");
   window.focus();
   
 };
 // =========================================
 // =========================================
 // =========================================
-// Scène de jeu
-class play_game_scene extends Phaser.Scene {
+// Scène du menu
+class menu_scene extends Phaser.Scene {
   constructor() {
-    super("play_game_scene");
+    super("menu_scene");
   }
-// =========================================
-// =========================================
-// =========================================
-// Preload the files used in the game.
+  // =========================================
+  // =========================================
+  // =========================================
+  // Preload the files used in the game.
   preload() {
     // LOAD du background
     this.load.image("background_1", "assets/sprites/bg/Background.png")
@@ -106,25 +107,72 @@ class play_game_scene extends Phaser.Scene {
     this.load.audio('jump_2', ["assets/sound/female_jump2.wav"])
     this.load.audio('coin_sound', ["assets/sound/coin.wav"])
     this.load.audio('death_1', ["assets/sound/female_death.wav"])
+    this.load.audio('click_button', ["assets/sound/click_button.wav"])
     // LOAD des boutons.
     this.load.image("play_button", "assets/sprites/PlayButton.png")
     this.load.image("go_menu_button", "assets/sprites/Home_Doorway.png")
+    this.load.image("logo", "assets/img/logo_jeu.png")
+    this.load.image("signature", "assets/img/KC_sign.png")
 
+  }
+  create() {
+          // Adding sounds
+          this.click_sound = this.sound.add("click_button", {volume: 0.4, loop: false});
+        // Creating the menu
+        this.logo = this.add.image(this.cameras.main.worldView.x + this.cameras.main.width / 2, this.cameras.main.worldView.y + this.cameras.main.height / 3, 'logo')
+        this.logo.setScale(0.15);
+        this.signature = this.add.image(this.cameras.main.worldView.x + this.cameras.main.width / 1.15, this.cameras.main.worldView.y + this.cameras.main.height / 1.1, 'signature')
+        this.signature.setScale(0.2);
+        this.play_button = this.add.image(this.cameras.main.worldView.x + this.cameras.main.width / 2, this.cameras.main.worldView.y + this.cameras.main.height / 1.3, 'play_button')
+        this.play_button.setInteractive().setScale(2);
+        this.play_button.on('pointerdown', () => {  
+          this.cameras.main.fadeOut(300);             
+          this.click_sound.play();
+
+          this.time.addEvent({
+            delay: 500,
+            callback: ()=>{
+              this.scene.switch("play_game_scene")
+            },
+            loop: false
+          })
+        });
+        this.bg_1 = this.add.tileSprite(0, 0, game.config.width, game.config.height, "background_1")
+        this.bg_1.setScale(2);
+        this.bg_1.alpha = 0.2;
+        this.bg_1.setOrigin(0, 0);
+        this.bg_1.setScrollFactor(0);
+  
+
+  }
+  update(){
+    this.bg_1.tilePositionX += 1;
+  }
+}
+// Scène de jeu
+class play_game_scene extends Phaser.Scene {
+  constructor() {
+    super("play_game_scene");
   }
 // =========================================
 // =========================================
 // =========================================
 // Create the elements that only need to be created once.
   create() {
-    // UI and button
+    // Reset speed
+    gameOptions.platformStartSpeed = 350;
+// =========================================
+// Vitesse qui augmente
+      this.time.addEvent({
+        delay: 500,
+        callback: ()=>{
+          if (gameOptions.platformStartSpeed < 700){
+          gameOptions.platformStartSpeed = gameOptions.platformStartSpeed + 2;
+          console.log(gameOptions.platformStartSpeed);
+        }},
+        loop: true
+      })
 
-    // Start button
-    this.pause_button= this.add.image(800, 55, 'go_menu_button')
-    this.pause_button.setInteractive().setScale(1.3);
-    this.pause_button.on('pointerdown', () => { 
-      // this.scene.pause(); 
-      // this.scene.start("go_menu_button")
-    });
 // =========================================
     // Fade and deatfh system init
     this.cameras.main.fadeIn(500);
@@ -137,7 +185,27 @@ class play_game_scene extends Phaser.Scene {
   this.jump_sound_2 = this.sound.add("jump_2", {volume: 0.5, loop: false});
   this.coin_sound = this.sound.add("coin_sound", {volume: 0.1, loop: false});
   this.death_sound_1 = this.sound.add("death_1", {volume: 0.4, loop: false});
+  this.click_sound = this.sound.add("click_button", {volume: 0.4, loop: false});
   this.music_theme.play();
+  // =========================================
+
+      // UI :
+    // leave button
+    this.pause_button= this.add.image(800, 55, 'go_menu_button')
+    this.pause_button.setInteractive().setScale(1.3);
+      this.pause_button.on('pointerdown', () => {  
+        this.cameras.main.fadeOut(300);
+       this.click_sound.play();
+        this.music_theme.stop();  
+        this.time.addEvent({
+          delay: 500,
+          callback: ()=>{
+            this.scene.switch("menu_scene")
+            this.scene.start("menu_scene")
+                  },
+          loop: false
+        })
+      });
 // =========================================
 // Background and parallax
     this.bg_1 = this.add.tileSprite(0, 0, game.config.width, game.config.height, "background_1")
@@ -146,15 +214,15 @@ class play_game_scene extends Phaser.Scene {
     this.bg_1.setOrigin(0, 0);
     this.bg_1.setScrollFactor(0);
     
-    this.bg_2 = this.add.tileSprite(0, 300, game.config.width, game.config.height, "background_3")
+    this.bg_2 = this.add.tileSprite(0, 200, game.config.width, game.config.height, "background_3")
     this.bg_2.setOrigin(0, 0);
     this.bg_2.setScrollFactor(0);
     
-    this.bg_3 = this.add.tileSprite(0, 370, game.config.width, game.config.height, "background_2")
+    this.bg_3 = this.add.tileSprite(0, 270, game.config.width, game.config.height, "background_2")
     this.bg_3.setOrigin(0, 0);
     this.bg_3.setScrollFactor(0);
 
-    this.bg_4 = this.add.tileSprite(0, 360, game.config.width, game.config.height, "background_4")
+    this.bg_4 = this.add.tileSprite(0, 260, game.config.width, game.config.height, "background_4")
     this.bg_4.setOrigin(0, 0);
     this.bg_4.setScrollFactor(0);
 // =========================================
@@ -309,7 +377,7 @@ class play_game_scene extends Phaser.Scene {
       platform.setVelocityX(gameOptions.platformStartSpeed * -1);
       this.platformGroup.add(platform);
     platform.setScale(1.5);
-    this.nextPlatformDistance = Phaser.Math.Between(
+    this.nextPlatformDistance = Phaser.Math.FloatBetween(
       gameOptions.spawnRange[0],
       gameOptions.spawnRange[1]
     );
@@ -321,18 +389,18 @@ class play_game_scene extends Phaser.Scene {
           Phaser.Math.Between(
             1300, 1700
           ),
-          game.config.height / 3,
+          game.config.height / Phaser.Math.Between(2, 4),
           "coin"
         ).setScale(0.2);
         coin_counter = 0;
         this.physics.add.overlap(this.player, this.coin, collectCoin, null, this);
 
     }
-    if (fire_counter == 5){
+    if (fire_counter == 2){
               // adding a fireball
               this.fireball = this.physics.add.sprite(
                 1500,
-                game.config.height / 3,
+                game.config.height / Phaser.Math.FloatBetween(2, 4),
                 "fireball"
               );
               fire_counter = 0;
@@ -360,6 +428,7 @@ class play_game_scene extends Phaser.Scene {
     ) {
       if (this.player.body.touching.down) {
         this.playerJumps = 0;
+        console.log("jump_reset")
       }
       if (this.playerJumps <= 2){
         this.playerJumps++;
@@ -396,7 +465,6 @@ class play_game_scene extends Phaser.Scene {
     }
     if (this.player.body.touching.down) {
       this.player.anims.play("right", true);
-      this.playerJumps = 0;
     }
     // game over by fall
     if (this.player.y > game.config.height) {
@@ -442,7 +510,7 @@ class play_game_scene extends Phaser.Scene {
 // =========================================
 // Fireball mechanic
     this.fireball.anims.play("fire_anim", true);
-    this.fireball.setVelocityX(-500);
+    this.fireball.setVelocityX(gameOptions.platformStartSpeed * -2);
 
 
 // Check if dead {
