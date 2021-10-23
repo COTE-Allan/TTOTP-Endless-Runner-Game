@@ -223,15 +223,15 @@ class play_game_scene extends Phaser.Scene {
     this.bg_1.setOrigin(0, 0);
     this.bg_1.setScrollFactor(0);
     
-    this.bg_2 = this.add.tileSprite(0, 200, game.config.width, game.config.height, "background_3")
+    this.bg_2 = this.add.tileSprite(0, 150, game.config.width, game.config.height, "background_3")
     this.bg_2.setOrigin(0, 0);
     this.bg_2.setScrollFactor(0);
     
-    this.bg_3 = this.add.tileSprite(0, 270, game.config.width, game.config.height, "background_2")
+    this.bg_3 = this.add.tileSprite(0, 220, game.config.width, game.config.height, "background_2")
     this.bg_3.setOrigin(0, 0);
     this.bg_3.setScrollFactor(0);
 
-    this.bg_4 = this.add.tileSprite(0, 260, game.config.width, game.config.height, "background_4")
+    this.bg_4 = this.add.tileSprite(0, 210, game.config.width, game.config.height, "background_4")
     this.bg_4.setOrigin(0, 0);
     this.bg_4.setScrollFactor(0);
 // =========================================

@@ -1,0 +1,20 @@
+{
+  "name": "endless_runner_kc",
+  "version": "1.0.0",
+  "description": "the princess need to be saved... she will do it alone !",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "sass --watch ./assets/scss/input.scss:./assets/css/output.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/COTE-Allan/endless_runner_game.git"
+  },
+  "author": "Koffi Cup",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/COTE-Allan/endless_runner_game/issues"
+  },
+  "homepage": "https://github.com/COTE-Allan/endless_runner_game#readme"
+}

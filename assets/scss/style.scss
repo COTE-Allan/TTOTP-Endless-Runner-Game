@@ -1,0 +1,157 @@
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-size: cover;
+  height: 100vh;
+  width: 100vw;
+  overflow-x: hidden;
+  background-color: black;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  font-size: 35px;
+}
+h1 {
+  font-size: 40px;
+  font-weight: 600;
+}
+
+// Creation du fond d'écran
+.bg {
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  filter: blur(4px);
+  background-position: 0 0;
+  &.layer_1 {
+    animation: slide 300s linear infinite;
+    background: url(../sprites/bg/Background.png);
+    background-repeat: repeat;
+    background-size: auto 100%;
+  }
+  &.layer_2 {
+    background: url(../img/back-walls.png);
+    background-size: auto 120%;
+  }
+}
+@keyframes slide {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: -10000px 0;
+  }
+}
+
+// HEADER
+.header {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.8);
+  height: 10vh;
+  width: 100vw;
+  &_nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+  &_item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    font-size: 3vw;
+    transition: color ease-in-out 200ms;
+    & span {
+      font-size: 5vw;
+    }
+    @include respond-above(xs) {
+      font-size: 20px;
+      margin: 10px;
+
+      & span {
+        font-size: 3vw;
+      }
+    }
+    &:hover {
+      cursor: pointer;
+      color: rgb(108, 26, 108);
+    }
+  }
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  height: 90vh;
+  // Logo
+  &_logo {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    & img {
+      width: 80vw;
+      @include respond-above(xs) {
+        width: 50vw;
+      }
+    }
+  }
+  &_credit {
+    padding-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+    background-color: black;
+    width: 100vw;
+    font-size: 20px;
+    font-size: 30px;
+    h1,
+    h2 {
+      letter-spacing: 20px;
+    }
+    hr {
+      width: 90vw;
+      border: white 2px solid;
+      margin-top: 0;
+    }
+    li {
+      margin-top: 5px;
+      width: 90vw;
+    }
+    div {
+      margin-top: 40px;
+    }
+    @include respond-above(xs) {
+      font-size: 30px;
+      h1,
+      h2 {
+        letter-spacing: 30px;
+      }
+      hr {
+        width: 90vw;
+        border: white 3px solid;
+        margin-top: 0;
+      }
+      li {
+        margin-top: 10px;
+        width: 90vw;
+      }
+      div {
+        margin-top: 70px;
+      }
+    }
+  }
+}
+
+// Placement du jeu
+canvas {
+  border: white 5px solid;
+}

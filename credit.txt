@@ -4,6 +4,7 @@ kvsr
 bakudas
 Will Tice
 Wenrexa
+Luis Zuno
 
 sounds :
 TaraMG - Princess voice

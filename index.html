@@ -1,18 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+
     <title>The tale of the princess</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
-    <style type="text/css">
-      body {
-        margin: 0;
-      }
-    </style>
+    <link rel="stylesheet" href="assets/css/reset.css" />
+    <link rel="stylesheet" href="assets/css/output.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
   </head>
   <body>
-    <div id="game_screen"></div>
+    <div class="bg_div">
+      <div class="bg layer_1"></div>
+      <div class="bg layer_2"></div>
+    </div>
+    <header class="header">
+      <nav class="header_nav">
+        <a href="game.html" class="header_item">
+          <span class="material-icons"> videogame_asset </span>Jouer
+        </a>
+        <div class="header_item">
+          <span class="material-icons"> auto_stories </span>Lire la mini-BD
+        </div>
+        <div class="header_item">
+          <span class="material-icons"> volume_up </span> Son activé
+        </div>
+      </nav>
+    </header>
+    <main class="main">
+      <div class="main_logo">
+        <img
+          class="animate__animated animate__zoomIn"
+          src="assets/img/logo_jeu.png"
+          alt="logo du jeu"
+        />
+      </div>
+      <div class="main_credit">
+        <h1>CREDITS</h1>
+        <hr />
+        <div>
+          <h2>SPRITES</h2>
+          <ul>
+            <li>clembod</li>
+            <li>kvsr</li>
+            <li>Will Tice</li>
+            <li>bakudas</li>
+            <li>Luis Zuno</li>
+            <li>Wenrexa</li>
+          </ul>
+        </div>
+        <div>
+          <h2>SONS</h2>
+          <ul>
+            <li>TaraMG - Voix de la princesse</li>
+            <li>ProjectsU012 - Bruit des pièces</li>
+            <li>Toby Fox - Pandora Palace</li>
+            <li>Master Of Disaster - Pandora Palace Remix</li>
+          </ul>
+        </div>
+        <div>
+          <h2>FAIT AVEC</h2>
+          <ul>
+            <li>Phaser 3</li>
+            <li>Beaucoup de café</li>
+          </ul>
+        </div>
+      </div>
+    </main>
   </body>
-  <script src="assets/js/phaser.js"></script>
-  <script type="module" src="assets/js/main.js"></script>
 </html>
