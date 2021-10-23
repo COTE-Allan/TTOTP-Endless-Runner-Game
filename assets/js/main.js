@@ -17,6 +17,7 @@ let player_dead = false;
 let dead_loop_once = true;
 // let reason = "none";
 let music_on = false;
+let mute = false;
 // =========================================
 // =========================================
 // =========================================
@@ -42,7 +43,10 @@ window.onload = function () {
     type: Phaser.AUTO,
     width: 850,
     height: 450,
-        scale: { parent: 'game_screen', autoCenter: Phaser.Scale.CENTER_BOTH },
+    scale: { 
+      parent: 'game_screen', 
+      autoCenter: Phaser.Scale.CENTER_BOTH,
+    },
     scene: [
       menu_scene,
       play_game_scene,
@@ -114,6 +118,9 @@ class menu_scene extends Phaser.Scene {
     // LOAD des boutons.
     this.load.image("play_button", "assets/sprites/PlayButton.png")
     this.load.image("go_menu_button", "assets/sprites/Home_Doorway.png")
+    this.load.image("mute_button", "assets/sprites/MusicNote_Unmuted.png")
+    this.load.image("unmute_button", "assets/sprites/MusicNote_Muted.png")
+    // LOAD des logos
     this.load.image("logo", "assets/img/logo_jeu.png")
     this.load.image("signature", "assets/img/KC_sign.png")
 
@@ -127,12 +134,16 @@ class menu_scene extends Phaser.Scene {
         this.logo.setScale(0.15);
         this.signature = this.add.image(this.cameras.main.worldView.x + this.cameras.main.width / 1.15, this.cameras.main.worldView.y + this.cameras.main.height / 1.1, 'signature')
         this.signature.setScale(0.2);
-        this.play_button = this.add.image(this.cameras.main.worldView.x + this.cameras.main.width / 2, this.cameras.main.worldView.y + this.cameras.main.height / 1.3, 'play_button')
+        // Bouton play
+        this.play_button = this.add.image(this.cameras.main.worldView.x + this.cameras.main.width / 2.3, this.cameras.main.worldView.y + this.cameras.main.height / 1.3, 'play_button')
         this.play_button.setInteractive().setScale(1.5);
         this.play_button.on('pointerdown', () => {  
-          this.cameras.main.fadeOut(300);             
-          this.click_sound.play();
+          this.cameras.main.fadeOut(300);
+          if (mute == false){
+              this.click_sound.play();
 
+          }         
+  
           this.time.addEvent({
             delay: 500,
             callback: ()=>{
@@ -140,6 +151,26 @@ class menu_scene extends Phaser.Scene {
             },
             loop: false
           })
+        });
+        // Bouton Mute
+        if (mute == false){
+          this.mute_button = this.add.image(this.cameras.main.worldView.x + this.cameras.main.width / 1.7, this.cameras.main.worldView.y + this.cameras.main.height / 1.3, 'mute_button')
+
+        } else {
+          this.mute_button = this.add.image(this.cameras.main.worldView.x + this.cameras.main.width / 1.7, this.cameras.main.worldView.y + this.cameras.main.height / 1.3, 'unmute_button')
+
+        }
+        this.mute_button.setInteractive().setScale(1.5);
+        this.mute_button.on('pointerdown', () => {  
+          this.click_sound.play();
+          if (mute == false){
+            this.mute_button.setTexture('unmute_button')
+            mute = true;
+          } else {
+            this.mute_button.setTexture('mute_button')
+            mute = false;
+          }
+        
         });
         this.bg_1 = this.add.tileSprite(0, 0, game.config.width, game.config.height, "background_1")
         this.bg_1.setScale(2);
@@ -190,11 +221,12 @@ class play_game_scene extends Phaser.Scene {
   this.coin_sound = this.sound.add("coin_sound", {volume: 0.1, loop: false});
   this.death_sound_1 = this.sound.add("death_1", {volume: 0.4, loop: false});
   this.click_sound = this.sound.add("click_button", {volume: 0.4, loop: false});
-  if (music_on == false){
+  if (music_on == false && mute == false){
     this.music_theme.play();
     // console.log("music")
     music_on = true;
   }
+
   // =========================================
 
       // UI :
@@ -203,7 +235,10 @@ class play_game_scene extends Phaser.Scene {
     this.pause_button.setInteractive().setScale(1);
       this.pause_button.on('pointerdown', () => {  
         this.cameras.main.fadeOut(300);
-        this.click_sound.play();
+        if (mute == false){
+          this.click_sound.play();
+
+        }
         music_on = false;
         this.time.addEvent({
           delay: 500,
@@ -441,10 +476,16 @@ class play_game_scene extends Phaser.Scene {
       this.player.setVelocityY(gameOptions.jumpForce * -1);
       if (this.playerJumps == 1) {
         this.player.anims.play("jump", true);
-        this.jump_sound_1.play();
+        if (mute == false){
+          this.jump_sound_1.play();
+
+        }
       } else {
         this.player.anims.play("Djump", true);
-        this.jump_sound_2.play();
+        if (mute == false){
+          this.jump_sound_2.play();
+
+        }
       }
     
     }
@@ -528,7 +569,10 @@ class play_game_scene extends Phaser.Scene {
     if (dead_loop_once == true){
       // Kill character
       dead_loop_once = false;
-      this.death_sound_1.play();
+      if (mute == false){
+        this.death_sound_1.play();
+
+      }
       this.player.setActive(false).setVisible(false);
       // Animated the death
       this.death_explosion = this.physics.add.sprite(
@@ -603,7 +647,10 @@ function score_each_seconds() {
 function collectCoin (player, coin)
 {
     coin.disableBody(true, true);
-   this.coin_sound.play();
+    if (mute == false){
+      this.coin_sound.play();
+
+    }
     score += 20;
     scoreText.setText('Score: ' + score);
 }

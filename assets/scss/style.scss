@@ -24,22 +24,27 @@ body {
   filter: blur(4px);
   background-position: 0 0;
   &.layer_1 {
-    animation: slide 300s linear infinite;
+    animation: slide 20s linear infinite;
     background: url(../sprites/bg/Background.png);
     background-repeat: repeat;
     background-size: auto 100%;
   }
   &.layer_2 {
     background: url(../img/back-walls.png);
-    background-size: auto 120%;
+    background-size: auto 120vh;
   }
 }
 @keyframes slide {
-  from {
-    background-position: 0 0;
+  0% {
+    background-position: 0 50%;
+    opacity: 0%;
   }
-  to {
-    background-position: -10000px 0;
+  30% {
+    opacity: 100%;
+  }
+  100% {
+    background-position: 100% 50%;
+    opacity: 0%;
   }
 }
 
@@ -66,12 +71,20 @@ body {
     align-items: center;
     color: white;
     text-decoration: none;
-    font-size: 3vw;
+    font-size: 4vw;
     transition: color ease-in-out 200ms;
     & span {
-      font-size: 5vw;
+      font-size: 25px;
     }
     @include respond-above(xs) {
+      font-size: 20px;
+      margin: 10px;
+
+      & span {
+        font-size: 6vw;
+      }
+    }
+    @include respond-above(lg) {
       font-size: 20px;
       margin: 10px;
 
@@ -95,40 +108,40 @@ body {
   &_img {
     display: flex;
     flex-direction: column;
-    @include respond-above(xs) {
+    @include respond-above(lg) {
       flex-direction: row;
     }
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
   }
   &_logo {
     width: 100%;
     @include respond-above(xs) {
-      width: 40%;
+      width: 60%;
+    }
+    @include respond-above(lg) {
+      width: 45%;
     }
   }
   &_character {
-    width: 80%;
+    width: 60%;
     @include respond-above(xs) {
-      width: 30%;
+      width: 45%;
+    }
+    @include respond-above(lg) {
+      width: 25%;
     }
   }
   &_credit {
     display: flex;
     flex-direction: column;
+    align-items: center;
     text-align: left;
-    padding-left: 20px;
     background-color: black;
     width: 100vw;
     font-size: 14px;
     .img_ul {
       display: flex;
-    }
-    img {
-      width: 70px;
-      @include respond-above(xs) {
-        width: 100px;
-      }
     }
     p {
       width: 90vw;
@@ -144,7 +157,10 @@ body {
       letter-spacing: 15px;
     }
     hr {
-      width: 80vw;
+      width: 70vw;
+      @include respond-above(xs) {
+        width: 90vw;
+      }
       border: white 1px solid;
       margin: 0px 0px 10px 0px;
     }
@@ -174,6 +190,9 @@ body {
 canvas {
   border: white 5px solid;
   margin: 10vh 0 10vh 0;
+  transform: translate(-2%, 0%);
+  max-width: 100%;
+  max-height: 50vw;
 }
 .main {
   &_controls {
@@ -181,10 +200,13 @@ canvas {
     align-items: center;
     flex-direction: column;
     justify-content: center;
-    background-color: rgba(0, 0, 0, 0.4);
+    background-color: black;
     font-size: 10px;
     @include respond-above(xs) {
       font-size: 15px;
+    }
+    @include respond-above(lg) {
+      font-size: 25px;
     }
     padding: 20px;
     width: 100vw;
@@ -193,6 +215,9 @@ canvas {
       letter-spacing: 20px;
       font-size: 20px;
       margin: 30px 0 10px 0;
+      @include respond-above(lg) {
+        font-size: 40px;
+      }
     }
     hr {
       border: white 1px solid;
@@ -209,12 +234,19 @@ canvas {
         align-items: center;
       }
     }
+
     & img {
       width: 100px;
+      @include respond-above(lg) {
+        width: 200px;
+      }
     }
     & span {
       font-size: 50px;
       margin-right: 10px;
+      @include respond-above(lg) {
+        font-size: 100px;
+      }
     }
   }
 }
@@ -228,6 +260,10 @@ footer {
   & svg {
     width: 70px;
     height: 100px;
+    @include respond-above(lg) {
+      width: 150px;
+      height: 200px;
+    }
   }
 }
 

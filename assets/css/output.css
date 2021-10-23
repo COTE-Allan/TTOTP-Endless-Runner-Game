@@ -26,22 +26,27 @@ body {
   background-position: 0 0;
 }
 .bg.layer_1 {
-  animation: slide 300s linear infinite;
+  animation: slide 20s linear infinite;
   background: url(../sprites/bg/Background.png);
   background-repeat: repeat;
   background-size: auto 100%;
 }
 .bg.layer_2 {
   background: url(../img/back-walls.png);
-  background-size: auto 120%;
+  background-size: auto 120vh;
 }
 
 @keyframes slide {
-  from {
-    background-position: 0 0;
+  0% {
+    background-position: 0 50%;
+    opacity: 0%;
   }
-  to {
-    background-position: -10000px 0;
+  30% {
+    opacity: 100%;
+  }
+  100% {
+    background-position: 100% 50%;
+    opacity: 0%;
   }
 }
 .header {
@@ -67,13 +72,22 @@ body {
   align-items: center;
   color: white;
   text-decoration: none;
-  font-size: 3vw;
+  font-size: 4vw;
   transition: color ease-in-out 200ms;
 }
 .header_item span {
-  font-size: 5vw;
+  font-size: 25px;
 }
 @media (min-width: 576px) {
+  .header_item {
+    font-size: 20px;
+    margin: 10px;
+  }
+  .header_item span {
+    font-size: 6vw;
+  }
+}
+@media (min-width: 1200px) {
   .header_item {
     font-size: 20px;
     margin: 10px;
@@ -97,9 +111,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
 }
-@media (min-width: 576px) {
+@media (min-width: 1200px) {
   .main_img {
     flex-direction: row;
   }
@@ -109,36 +123,38 @@ body {
 }
 @media (min-width: 576px) {
   .main_logo {
-    width: 40%;
+    width: 60%;
+  }
+}
+@media (min-width: 1200px) {
+  .main_logo {
+    width: 45%;
   }
 }
 .main_character {
-  width: 80%;
+  width: 60%;
 }
 @media (min-width: 576px) {
   .main_character {
-    width: 30%;
+    width: 45%;
+  }
+}
+@media (min-width: 1200px) {
+  .main_character {
+    width: 25%;
   }
 }
 .main_credit {
   display: flex;
   flex-direction: column;
+  align-items: center;
   text-align: left;
-  padding-left: 20px;
   background-color: black;
   width: 100vw;
   font-size: 14px;
 }
 .main_credit .img_ul {
   display: flex;
-}
-.main_credit img {
-  width: 70px;
-}
-@media (min-width: 576px) {
-  .main_credit img {
-    width: 100px;
-  }
 }
 .main_credit p {
   width: 90vw;
@@ -154,9 +170,14 @@ body {
   letter-spacing: 15px;
 }
 .main_credit hr {
-  width: 80vw;
+  width: 70vw;
   border: white 1px solid;
   margin: 0px 0px 10px 0px;
+}
+@media (min-width: 576px) {
+  .main_credit hr {
+    width: 90vw;
+  }
 }
 .main_credit li {
   margin-top: 5px;
@@ -183,6 +204,9 @@ body {
 canvas {
   border: white 5px solid;
   margin: 10vh 0 10vh 0;
+  transform: translate(-2%, 0%);
+  max-width: 100%;
+  max-height: 50vw;
 }
 
 .main_controls {
@@ -190,7 +214,7 @@ canvas {
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: black;
   font-size: 10px;
   padding: 20px;
   width: 100vw;
@@ -200,11 +224,22 @@ canvas {
     font-size: 15px;
   }
 }
+@media (min-width: 1200px) {
+  .main_controls {
+    font-size: 25px;
+  }
+}
 .main_controls h1,
 .main_controls h2 {
   letter-spacing: 20px;
   font-size: 20px;
   margin: 30px 0 10px 0;
+}
+@media (min-width: 1200px) {
+  .main_controls h1,
+.main_controls h2 {
+    font-size: 40px;
+  }
 }
 .main_controls hr {
   border: white 1px solid;
@@ -224,9 +259,19 @@ canvas {
 .main_controls img {
   width: 100px;
 }
+@media (min-width: 1200px) {
+  .main_controls img {
+    width: 200px;
+  }
+}
 .main_controls span {
   font-size: 50px;
   margin-right: 10px;
+}
+@media (min-width: 1200px) {
+  .main_controls span {
+    font-size: 100px;
+  }
 }
 
 footer {
@@ -239,6 +284,12 @@ footer {
 footer svg {
   width: 70px;
   height: 100px;
+}
+@media (min-width: 1200px) {
+  footer svg {
+    width: 150px;
+    height: 200px;
+  }
 }
 
 #Fumée {
