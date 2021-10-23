@@ -2,6 +2,11 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
     <title>The tale of the princess</title>
     <link rel="stylesheet" href="assets/css/reset.css" />
     <link rel="stylesheet" href="assets/css/output.css" />
@@ -9,14 +14,51 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
   </head>
   <body>
     <div class="bg_div">
       <div class="bg layer_1"></div>
       <div class="bg layer_2"></div>
     </div>
+    <header class="header">
+      <nav class="header_nav">
+        <a href="index.html" class="header_item">
+          <span class="material-icons"> home </span>Accueil
+        </a>
+        <div class="header_item">
+          <span class="material-icons"> auto_stories </span>Lire la mini-BD
+        </div>
+        <div class="header_item">
+          <span class="material-icons"> volume_up </span> Son activé
+        </div>
+      </nav>
+    </header>
+    <main class="main">
+      <div id="game_screen"></div>
+      <div class="main_controls">
+        <h1>CONTROLES</h1>
+        <hr />
+        <div class="main_controls_detail">
+          <div>
+            <span class="material-icons">touch_app</span> Touche l'écran pour
+            sauter !
+          </div>
+          <img src="assetS/img/player_jump.png" alt="player_control_jump" />
+        </div>
+        <div class="main_controls_detail">
+          <div>
+            <span class="material-icons">touch_app</span> Après deux sauts,
+            touche pour plonger !
+          </div>
 
-    <div id="game_screen"></div>
+          <img src="assetS/img/player_dive.png" alt="player_control_dive" />
+        </div>
+      </div>
+    </main>
   </body>
   <script src="assets/js/phaser.js"></script>
   <script type="module" src="assets/js/main.js"></script>
