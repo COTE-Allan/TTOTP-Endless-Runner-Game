@@ -43,7 +43,7 @@ body {
     opacity: 100%;
   }
   100% {
-    background-position: 100% 50%;
+    background-position: -500px 50%;
     opacity: 0%;
   }
 }
@@ -71,7 +71,7 @@ body {
     align-items: center;
     color: white;
     text-decoration: none;
-    font-size: 4vw;
+    font-size: 15px;
     transition: color ease-in-out 200ms;
     & span {
       font-size: 25px;
@@ -313,4 +313,47 @@ footer {
   100% {
     opacity: 0%;
   }
+}
+
+.main {
+  &_comic {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 20px 0 20px 0;
+    .next_page_button {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 10px 20px 10px 20px;
+      font-size: 20px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      transition: color 200ms ease-in, background-color 200ms ease-in;
+      &:hover {
+        background-color: white;
+        color: black;
+        cursor: pointer;
+      }
+      @include respond-above(lg) {
+        font-size: 30px;
+      }
+    }
+    .comic_page {
+      img {
+        width: 90vw;
+        @include respond-above(lg) {
+          width: 50vw;
+        }
+      }
+    }
+  }
+}
+
+.animate__slideOutLeft {
+  opacity: 0%;
+  transition: opacity 800ms ease-in;
+}
+
+.animate__slideInRight {
+  opacity: 100%;
+  transition: opacity 800ms ease-in;
 }
