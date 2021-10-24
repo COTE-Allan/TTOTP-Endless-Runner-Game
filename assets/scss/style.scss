@@ -190,9 +190,8 @@ body {
 canvas {
   border: white 5px solid;
   margin: 10vh 0 10vh 0;
-  transform: translate(-2%, 0%);
-  max-width: 100%;
-  max-height: 50vw;
+  max-width: 80%;
+  max-height: 40vw;
 }
 .main {
   &_controls {
@@ -212,7 +211,7 @@ canvas {
     width: 100vw;
     h1,
     h2 {
-      letter-spacing: 20px;
+      letter-spacing: 10px;
       font-size: 20px;
       margin: 30px 0 10px 0;
       @include respond-above(lg) {
@@ -227,7 +226,7 @@ canvas {
     &_detail {
       display: flex;
       align-items: center;
-      width: 60vw;
+      width: 70vw;
       margin-top: 20px;
       & div {
         display: flex;
