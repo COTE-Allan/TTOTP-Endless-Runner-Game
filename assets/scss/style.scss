@@ -51,12 +51,13 @@ body {
 // HEADER
 .header {
   color: white;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: black;
+  border-top: 5px solid rgb(255, 255, 255);
   height: 10vh;
   width: 100vw;
   padding: 10px;
   position: sticky;
-  top: 0px;
+  bottom: 0px;
   z-index: 1000;
   &_nav {
     display: flex;
@@ -76,7 +77,7 @@ body {
     & span {
       font-size: 25px;
     }
-    @include respond-above(xs) {
+    @include respond-above(sm) {
       font-size: 20px;
       margin: 10px;
 
@@ -103,7 +104,8 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: 90vh;
+  height: 100vh;
+  width: 100vw;
   // Logo
   &_img {
     display: flex;
@@ -124,7 +126,7 @@ body {
     }
   }
   &_character {
-    width: 60%;
+    width: 70%;
     @include respond-above(xs) {
       width: 45%;
     }
@@ -132,55 +134,34 @@ body {
       width: 25%;
     }
   }
-  &_credit {
+
+  &_comic {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    text-align: left;
-    background-color: black;
-    width: 100vw;
-    font-size: 14px;
-    .img_ul {
-      display: flex;
+    flex-direction: column;
+    margin: 20px 0 20px 0;
+    .next_page_button {
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 10px 20px 10px 20px;
+      font-size: 20px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      transition: color 200ms ease-in, background-color 200ms ease-in;
+      &:hover {
+        background-color: white;
+        color: black;
+        cursor: pointer;
+      }
+      @include respond-above(lg) {
+        font-size: 30px;
+      }
     }
-    p {
-      width: 90vw;
-      text-align: center;
-    }
-    h1 {
-      font-size: 30px;
-      font-weight: 600;
-    }
-    h1,
-    h2 {
-      padding-top: 20px;
-      letter-spacing: 15px;
-    }
-    hr {
-      width: 70vw;
-      @include respond-above(xs) {
+    .comic_page {
+      img {
         width: 90vw;
-      }
-      border: white 1px solid;
-      margin: 0px 0px 10px 0px;
-    }
-    li {
-      margin-top: 5px;
-      width: 90vw;
-    }
-    @include respond-above(xs) {
-      font-size: 30px;
-      h1,
-      h2 {
-        letter-spacing: 20px;
-        margin: 30px 0 10px 0;
-      }
-      hr {
-        border: white 3px solid;
-        margin-top: 0;
-      }
-      li {
-        margin-top: 10px;
+        @include respond-above(lg) {
+          width: 50vw;
+        }
       }
     }
   }
@@ -196,9 +177,9 @@ canvas {
 .main {
   &_controls {
     display: flex;
-    align-items: center;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
+    text-align: left;
     background-color: black;
     font-size: 10px;
     @include respond-above(xs) {
@@ -222,6 +203,14 @@ canvas {
       border: white 1px solid;
       margin-top: 0;
       width: 90vw;
+    }
+    li {
+      margin-top: 5px;
+      width: 90vw;
+      font-size: 15px;
+      @include respond-above(sm) {
+        font-size: 20px;
+      }
     }
     &_detail {
       display: flex;
@@ -253,13 +242,14 @@ canvas {
 footer {
   padding-top: 20px;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   background-color: black;
   width: 100vw;
   & svg {
     width: 70px;
     height: 100px;
-    @include respond-above(lg) {
+    @include respond-above(sm) {
       width: 150px;
       height: 200px;
     }
@@ -312,39 +302,6 @@ footer {
   }
   100% {
     opacity: 0%;
-  }
-}
-
-.main {
-  &_comic {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    margin: 20px 0 20px 0;
-    .next_page_button {
-      background-color: rgba(0, 0, 0, 0.8);
-      padding: 10px 20px 10px 20px;
-      font-size: 20px;
-      border-radius: 5px;
-      text-transform: uppercase;
-      transition: color 200ms ease-in, background-color 200ms ease-in;
-      &:hover {
-        background-color: white;
-        color: black;
-        cursor: pointer;
-      }
-      @include respond-above(lg) {
-        font-size: 30px;
-      }
-    }
-    .comic_page {
-      img {
-        width: 90vw;
-        @include respond-above(lg) {
-          width: 50vw;
-        }
-      }
-    }
   }
 }
 

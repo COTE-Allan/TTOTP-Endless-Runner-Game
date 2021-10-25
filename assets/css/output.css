@@ -51,12 +51,13 @@ body {
 }
 .header {
   color: white;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: black;
+  border-top: 5px solid white;
   height: 10vh;
   width: 100vw;
   padding: 10px;
   position: sticky;
-  top: 0px;
+  bottom: 0px;
   z-index: 1000;
 }
 .header_nav {
@@ -78,7 +79,7 @@ body {
 .header_item span {
   font-size: 25px;
 }
-@media (min-width: 576px) {
+@media (min-width: 768px) {
   .header_item {
     font-size: 20px;
     margin: 10px;
@@ -105,7 +106,8 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: 90vh;
+  height: 100vh;
+  width: 100vw;
 }
 .main_img {
   display: flex;
@@ -121,7 +123,7 @@ body {
 .main_logo {
   width: 100%;
 }
-@media (min-width: 576px) {
+@media (min-width: 560px) {
   .main_logo {
     width: 60%;
   }
@@ -132,9 +134,9 @@ body {
   }
 }
 .main_character {
-  width: 60%;
+  width: 70%;
 }
-@media (min-width: 576px) {
+@media (min-width: 560px) {
   .main_character {
     width: 45%;
   }
@@ -144,60 +146,36 @@ body {
     width: 25%;
   }
 }
-.main_credit {
+.main_comic {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  text-align: left;
-  background-color: black;
-  width: 100vw;
-  font-size: 14px;
+  flex-direction: column;
+  margin: 20px 0 20px 0;
 }
-.main_credit .img_ul {
-  display: flex;
+.main_comic .next_page_button {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 10px 20px 10px 20px;
+  font-size: 20px;
+  border-radius: 5px;
+  text-transform: uppercase;
+  transition: color 200ms ease-in, background-color 200ms ease-in;
 }
-.main_credit p {
-  width: 90vw;
-  text-align: center;
+.main_comic .next_page_button:hover {
+  background-color: white;
+  color: black;
+  cursor: pointer;
 }
-.main_credit h1 {
-  font-size: 30px;
-  font-weight: 600;
-}
-.main_credit h1,
-.main_credit h2 {
-  padding-top: 20px;
-  letter-spacing: 15px;
-}
-.main_credit hr {
-  width: 70vw;
-  border: white 1px solid;
-  margin: 0px 0px 10px 0px;
-}
-@media (min-width: 576px) {
-  .main_credit hr {
-    width: 90vw;
-  }
-}
-.main_credit li {
-  margin-top: 5px;
-  width: 90vw;
-}
-@media (min-width: 576px) {
-  .main_credit {
+@media (min-width: 1200px) {
+  .main_comic .next_page_button {
     font-size: 30px;
   }
-  .main_credit h1,
-.main_credit h2 {
-    letter-spacing: 20px;
-    margin: 30px 0 10px 0;
-  }
-  .main_credit hr {
-    border: white 3px solid;
-    margin-top: 0;
-  }
-  .main_credit li {
-    margin-top: 10px;
+}
+.main_comic .comic_page img {
+  width: 90vw;
+}
+@media (min-width: 1200px) {
+  .main_comic .comic_page img {
+    width: 50vw;
   }
 }
 
@@ -210,15 +188,15 @@ canvas {
 
 .main_controls {
   display: flex;
-  align-items: center;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
+  text-align: left;
   background-color: black;
   font-size: 10px;
   padding: 20px;
   width: 100vw;
 }
-@media (min-width: 576px) {
+@media (min-width: 560px) {
   .main_controls {
     font-size: 15px;
   }
@@ -244,6 +222,16 @@ canvas {
   border: white 1px solid;
   margin-top: 0;
   width: 90vw;
+}
+.main_controls li {
+  margin-top: 5px;
+  width: 90vw;
+  font-size: 15px;
+}
+@media (min-width: 768px) {
+  .main_controls li {
+    font-size: 20px;
+  }
 }
 .main_controls_detail {
   display: flex;
@@ -276,7 +264,8 @@ canvas {
 footer {
   padding-top: 20px;
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   background-color: black;
   width: 100vw;
 }
@@ -284,7 +273,7 @@ footer svg {
   width: 70px;
   height: 100px;
 }
-@media (min-width: 1200px) {
+@media (min-width: 768px) {
   footer svg {
     width: 150px;
     height: 200px;
@@ -339,39 +328,6 @@ footer svg {
     opacity: 0%;
   }
 }
-.main_comic {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  margin: 20px 0 20px 0;
-}
-.main_comic .next_page_button {
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: 10px 20px 10px 20px;
-  font-size: 20px;
-  border-radius: 5px;
-  text-transform: uppercase;
-  transition: color 200ms ease-in, background-color 200ms ease-in;
-}
-.main_comic .next_page_button:hover {
-  background-color: white;
-  color: black;
-  cursor: pointer;
-}
-@media (min-width: 1200px) {
-  .main_comic .next_page_button {
-    font-size: 30px;
-  }
-}
-.main_comic .comic_page img {
-  width: 90vw;
-}
-@media (min-width: 1200px) {
-  .main_comic .comic_page img {
-    width: 50vw;
-  }
-}
-
 .animate__slideOutLeft {
   opacity: 0%;
   transition: opacity 800ms ease-in;
