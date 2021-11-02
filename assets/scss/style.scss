@@ -23,25 +23,30 @@ body {
   height: 100vh;
   filter: blur(4px);
   background-position: 0 0;
+
   &.layer_1 {
     animation: slide 20s linear infinite;
     background: url(../sprites/bg/Background.png);
     background-repeat: repeat;
     background-size: auto 100%;
   }
+
   &.layer_2 {
     background: url(../img/back-walls.png);
     background-size: auto 120vh;
   }
 }
+
 @keyframes slide {
   0% {
     background-position: 0 50%;
     opacity: 0%;
   }
+
   30% {
     opacity: 100%;
   }
+
   100% {
     background-position: -500px 50%;
     opacity: 0%;
@@ -59,6 +64,7 @@ body {
   position: sticky;
   bottom: 0px;
   z-index: 1000;
+
   &_nav {
     display: flex;
     justify-content: space-around;
@@ -66,6 +72,7 @@ body {
     height: 100%;
     width: 100%;
   }
+
   &_item {
     display: flex;
     flex-direction: column;
@@ -74,9 +81,11 @@ body {
     text-decoration: none;
     font-size: 15px;
     transition: color ease-in-out 200ms;
+
     & span {
       font-size: 25px;
     }
+
     @include respond-above(sm) {
       font-size: 20px;
       margin: 10px;
@@ -85,6 +94,7 @@ body {
         font-size: 6vw;
       }
     }
+
     @include respond-above(lg) {
       font-size: 20px;
       margin: 10px;
@@ -93,6 +103,7 @@ body {
         font-size: 3vw;
       }
     }
+
     &:hover {
       cursor: pointer;
       color: rgb(108, 26, 108);
@@ -106,30 +117,39 @@ body {
   flex-direction: column;
   height: 100vh;
   width: 100vw;
+
   // Logo
   &_img {
     display: flex;
     flex-direction: column;
+
     @include respond-above(lg) {
       flex-direction: row;
     }
+
     align-items: center;
     justify-content: center;
   }
+
   &_logo {
     width: 100%;
+
     @include respond-above(xs) {
       width: 60%;
     }
+
     @include respond-above(lg) {
       width: 45%;
     }
   }
+
   &_character {
     width: 70%;
+
     @include respond-above(xs) {
       width: 45%;
     }
+
     @include respond-above(lg) {
       width: 25%;
     }
@@ -140,25 +160,42 @@ body {
     align-items: center;
     flex-direction: column;
     margin: 20px 0 20px 0;
-    .next_page_button {
+    .buttons_page_control {
+      display: flex;
+    }
+    .page_number_div {
+      font-size: 25px;
+    }
+ 
+    .page_detail {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin: 20px 0 20px 0;
+    }
+    .page_button {
       background-color: rgba(0, 0, 0, 0.8);
       padding: 10px 20px 10px 20px;
       font-size: 20px;
       border-radius: 5px;
       text-transform: uppercase;
       transition: color 200ms ease-in, background-color 200ms ease-in;
+
       &:hover {
         background-color: white;
         color: black;
         cursor: pointer;
       }
+
       @include respond-above(lg) {
         font-size: 30px;
       }
     }
+
     .comic_page {
       img {
         width: 90vw;
+
         @include respond-above(lg) {
           width: 50vw;
         }
@@ -174,6 +211,7 @@ canvas {
   max-width: 80%;
   max-height: 40vw;
 }
+
 .main {
   &_controls {
     display: flex;
@@ -182,41 +220,51 @@ canvas {
     text-align: left;
     background-color: black;
     font-size: 10px;
+
     @include respond-above(xs) {
       font-size: 15px;
     }
+
     @include respond-above(lg) {
       font-size: 25px;
     }
+
     padding: 20px;
     width: 100vw;
+
     h1,
     h2 {
       letter-spacing: 10px;
       font-size: 20px;
       margin: 30px 0 10px 0;
+
       @include respond-above(lg) {
         font-size: 40px;
       }
     }
+
     hr {
       border: white 1px solid;
       margin-top: 0;
       width: 90vw;
     }
+
     li {
       margin-top: 5px;
       width: 90vw;
       font-size: 15px;
+
       @include respond-above(sm) {
         font-size: 20px;
       }
     }
+
     &_detail {
       display: flex;
       align-items: center;
       width: 70vw;
       margin-top: 20px;
+
       & div {
         display: flex;
         align-items: center;
@@ -225,13 +273,16 @@ canvas {
 
     & img {
       width: 100px;
+
       @include respond-above(lg) {
         width: 200px;
       }
     }
+
     & span {
       font-size: 50px;
       margin-right: 10px;
+
       @include respond-above(lg) {
         font-size: 100px;
       }
@@ -246,9 +297,11 @@ footer {
   flex-direction: column;
   background-color: black;
   width: 100vw;
+
   & svg {
     width: 70px;
     height: 100px;
+
     @include respond-above(sm) {
       width: 150px;
       height: 200px;
@@ -268,49 +321,66 @@ footer {
     transform: translateY(0);
     opacity: 0%;
   }
+
   25% {
     opacity: 100%;
   }
+
   50% {
     opacity: 100%;
   }
+
   75% {
     -webkit-transform: translateY(-100px);
     transform: translateY(-100px);
     opacity: 0%;
   }
+
   100% {
     opacity: 0%;
   }
 }
+
 @keyframes slide-top {
   0% {
     -webkit-transform: translateY(0);
     transform: translateY(0);
     opacity: 0%;
   }
+
   25% {
     opacity: 100%;
   }
+
   50% {
     opacity: 100%;
   }
+
   75% {
     -webkit-transform: translateY(-100px);
     transform: translateY(-100px);
     opacity: 0%;
   }
+
   100% {
     opacity: 0%;
   }
 }
 
-.animate__slideOutLeft {
+.animate__slideOutLeft, .animate__slideOutRight {
   opacity: 0%;
   transition: opacity 800ms ease-in;
 }
 
-.animate__slideInRight {
+.animate__slideInRight, .animate__slideInLeft {
   opacity: 100%;
   transition: opacity 800ms ease-in;
+}
+
+
+.creative_commons {
+  font-size: 20px;
+  a {
+    color: white;
+  }
 }

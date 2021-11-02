@@ -152,7 +152,19 @@ body {
   flex-direction: column;
   margin: 20px 0 20px 0;
 }
-.main_comic .next_page_button {
+.main_comic .buttons_page_control {
+  display: flex;
+}
+.main_comic .page_number_div {
+  font-size: 25px;
+}
+.main_comic .page_detail {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 20px 0 20px 0;
+}
+.main_comic .page_button {
   background-color: rgba(0, 0, 0, 0.8);
   padding: 10px 20px 10px 20px;
   font-size: 20px;
@@ -160,13 +172,13 @@ body {
   text-transform: uppercase;
   transition: color 200ms ease-in, background-color 200ms ease-in;
 }
-.main_comic .next_page_button:hover {
+.main_comic .page_button:hover {
   background-color: white;
   color: black;
   cursor: pointer;
 }
 @media (min-width: 1200px) {
-  .main_comic .next_page_button {
+  .main_comic .page_button {
     font-size: 30px;
   }
 }
@@ -328,14 +340,21 @@ footer svg {
     opacity: 0%;
   }
 }
-.animate__slideOutLeft {
+.animate__slideOutLeft, .animate__slideOutRight {
   opacity: 0%;
   transition: opacity 800ms ease-in;
 }
 
-.animate__slideInRight {
+.animate__slideInRight, .animate__slideInLeft {
   opacity: 100%;
   transition: opacity 800ms ease-in;
+}
+
+.creative_commons {
+  font-size: 20px;
+}
+.creative_commons a {
+  color: white;
 }
 
 /*# sourceMappingURL=output.css.map */
